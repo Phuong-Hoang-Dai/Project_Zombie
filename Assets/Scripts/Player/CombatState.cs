@@ -15,16 +15,16 @@ public class CombatState : PlayerState
     public override void CalculateTargerSpeed()
     {
         _targetSpeed = PlayerController.Instance.MoveSpeed * 0.75f;
-        if (PlayerAssetsInputs.Instance.GetMoveInput() == Vector2.zero) _targetSpeed = 0.0f;
+        if (PlayerAssetsInputs.instance.GetMoveInput() == Vector2.zero) _targetSpeed = 0.0f;
     }
 
     public override void CalculateTargerAngle()
     {
-        Vector3 inputDirection = Quaternion.Euler(0f, 45, 0f) * new Vector3(PlayerAssetsInputs.Instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.Instance.GetMoveInput().y).normalized;
+        Vector3 inputDirection = Quaternion.Euler(0f, 45, 0f) * new Vector3(PlayerAssetsInputs.instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.instance.GetMoveInput().y).normalized;
         if (inputDirection != Vector3.zero)
             _inputRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 
-        Vector2 mouseDirection = PlayerAssetsInputs.Instance.GetLookDirection();
+        Vector2 mouseDirection = PlayerAssetsInputs.instance.GetLookDirection();
         _mouseRotation = Mathf.Atan2(mouseDirection.x, mouseDirection.y) * Mathf.Rad2Deg;
 
         angle = Vector3.Angle(mouseDirection, new Vector2(inputDirection.x, inputDirection.z));
@@ -70,8 +70,8 @@ public class CombatState : PlayerState
 
     public override void UpdateState(Animator _playerAnimator)
     {
-        if (PlayerAssetsInputs.Instance.IsSprint() || !PlayerAssetsInputs.Instance.IsAiming() 
-            || !PlayerAssetsInputs.Instance.IsCombat())
+        if (PlayerAssetsInputs.instance.IsSprint() || !PlayerAssetsInputs.instance.IsAiming() 
+            || !PlayerAssetsInputs.instance.IsCombat())
         {
             int _layerAnimID = _playerAnimator.GetLayerIndex(CurrentLayerNameAnim);
             _playerAnimator.SetLayerWeight(_layerAnimID, 0);
@@ -79,7 +79,7 @@ public class CombatState : PlayerState
             
             _stateContext.ChangeState(new NormalInCombatState(_stateContext));
         }
-        else if (PlayerAssetsInputs.Instance.IsAttack())
+        else if (PlayerAssetsInputs.instance.IsAttack())
         {
             _stateContext.ChangeState(new AttackingState(_stateContext));
 

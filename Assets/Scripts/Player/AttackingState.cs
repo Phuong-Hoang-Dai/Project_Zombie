@@ -11,7 +11,7 @@ public class AttackingState : CombatState
     public AttackingState(IStateContext stateContext) : base(stateContext)
     {
         _currentAnimID = Animator.StringToHash("isAttacking");
-        lookDirection = PlayerAssetsInputs.Instance.GetLookDirection();
+        lookDirection = PlayerAssetsInputs.instance.GetLookDirection();
         PlayerController.Instance.StartAttack();
     }
 
@@ -23,14 +23,14 @@ public class AttackingState : CombatState
             _playerAnimator.SetBool(_currentAnimID, false);
             PlayerController.Instance.StopAttack();
         }
-        if (CanChangeState() || !PlayerAssetsInputs.Instance.IsCombat())
+        if (CanChangeState() || !PlayerAssetsInputs.instance.IsCombat())
         {
             _stateContext.ChangeState(new CombatState(_stateContext));
         }
     }
     public override void CalculateTargerAngle()
     {
-        Vector3 inputDirection = Quaternion.Euler(0f, 45, 0f) * new Vector3(PlayerAssetsInputs.Instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.Instance.GetMoveInput().y).normalized;
+        Vector3 inputDirection = Quaternion.Euler(0f, 45, 0f) * new Vector3(PlayerAssetsInputs.instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.instance.GetMoveInput().y).normalized;
         if (inputDirection != Vector3.zero)
             _inputRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 

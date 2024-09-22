@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7cca0f120d714f4aa89f616e652eba2, type: 3}
+  m_Name: 03_DrinkBottle
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 278fd515141f769409d0b294d0d1e555, type: 3}
+  isEquipable: 0
+  nameItem: Drink bottle
+  cate: 1
+  inventoryCate: 1
+  statsToChange: 1
+  changeAmout: 3
+  maxQuantity: 9
+  desc: A drink botte is old, but It can heal for you.
+  price: 2
+  prefab: {fileID: 6816022180288790706, guid: 50f3fbd8a5612fb43947779497adfc6f, type: 3}

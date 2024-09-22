@@ -7,14 +7,14 @@ public class NormalState : PlayerState
 
     public override void CalculateTargerSpeed()
     {
-        bool isSprint = PlayerAssetsInputs.Instance.IsSprint();
+        bool isSprint = PlayerAssetsInputs.instance.IsSprint();
         _targetSpeed = isSprint ? PlayerController.Instance.SprintSpeed : PlayerController.Instance.MoveSpeed;
-        if (PlayerAssetsInputs.Instance.GetMoveInput() == Vector2.zero) _targetSpeed = 0.0f;
+        if (PlayerAssetsInputs.instance.GetMoveInput() == Vector2.zero) _targetSpeed = 0.0f;
     }
 
     public override void CalculateTargerAngle()
     {
-        Vector3 inputDirection = new Vector3(PlayerAssetsInputs.Instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.Instance.GetMoveInput().y).normalized;
+        Vector3 inputDirection = new Vector3(PlayerAssetsInputs.instance.GetMoveInput().x, 0.0f, PlayerAssetsInputs.instance.GetMoveInput().y).normalized;
         if (inputDirection != Vector3.zero)
             _inputRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + 45;
         else
@@ -56,7 +56,7 @@ public class NormalState : PlayerState
 
     public override void UpdateState(Animator _playerAnimator)
     {
-        if (PlayerAssetsInputs.Instance.IsCombat())
+        if (PlayerAssetsInputs.instance.IsCombat())
         {
             _stateContext.ChangeState(new NormalInCombatState(_stateContext));
 
