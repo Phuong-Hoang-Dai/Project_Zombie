@@ -13,17 +13,12 @@ public class MeeleWeapon : Weapon
         hitBox = GetComponent<BoxCollider>();
         _IDAttackAnimation = Animator.StringToHash("MeeleAttack");
     }
-    public override void Attack()
+
+    private void Update()
     {
-        if(isAttacking)
-        {
-            hitBox.enabled = true;
-        }
-        else
-        {
-            hitBox.enabled = false;
-        }
+        hitBox.enabled = isAttacking;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if(isAttacking)
@@ -32,7 +27,7 @@ public class MeeleWeapon : Weapon
             if(enemy != null)
             {
                 AudioSource.PlayClipAtPoint(attackAudioClip, transform.position); 
-                enemy.TakeDamage(_damageDealt);
+                Attack(enemy);
             }
         }
     }

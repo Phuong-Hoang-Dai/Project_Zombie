@@ -7,12 +7,12 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; private set; }
 
-    [SerializeField]
-    public List<InventoryItem> items = new();
     public List<EquipmentSlot> equipmentSlots = new();
     public List<ItemSlot> itemSlots = new();
     public Item emptyItem;
 
+    [SerializeField]
+    protected List<InventoryItem> inventoryItems = new();
     [SerializeField]
     protected EquippedSlot weaponSlot;
     [SerializeField]
@@ -56,7 +56,8 @@ public class InventoryManager : MonoBehaviour
         headSlot.AddNewItem(emptyItem);
         bodySlot.AddNewItem(emptyItem);
 
-        foreach (var item in items) AddItem(item.Item, item.Quantity);
+        foreach (var item in inventoryItems) AddItem(item.Item, item.Quantity);
+
         inventory.SetActive(false);
     }
 

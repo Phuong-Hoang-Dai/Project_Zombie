@@ -4,8 +4,4 @@ using UnityEngine;
 
 public class GunWeapon : Weapon
 {
-    public override void Attack()
-    {
-        
-    }
 }

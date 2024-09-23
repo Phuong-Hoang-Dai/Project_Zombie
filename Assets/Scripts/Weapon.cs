@@ -16,7 +16,16 @@ public abstract class Weapon : MonoBehaviour, IAttackable
     public float CritDmg => _critDmg;
     public float DamageMultiplier => _damageMultiplier;
 
-    public abstract void Attack();
+    public virtual void Attack(IDamageable enemy)
+    {
+        int isCrit = 0;
+        int rand = Random.Range(0, 1000);
+        if (rand <= 1000 * CritRate) isCrit = 1;
+
+        float outgoingDamage = (_damageDealt + PlayerStats.instance.DamageDealt) * (1 - CritDmg * isCrit);
+
+        enemy.TakeDamage(outgoingDamage);
+    }
     public void SetDamageDealt(float newDMG) => _damageDealt = newDMG;
     public void SetCritRate(float newCritRate) => _critRate = newCritRate;
     public void SetCritDmg(float newCritDmg) => _critDmg = newCritDmg;

@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour, IStateContext
 
     private void Update()
     {
-        weapon.Attack();
+        //weapon.Attack();
 
         state.UpdateState(playerAnim);
 

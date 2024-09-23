@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Zombie : MonoBehaviour, IDamageable
+public class Zombie : MonoBehaviour
 {
     private Vector3 targetPosition;
 
     private float _damageDealt;
     private float attackRange = 1f;
-    private float hp = 10f;
 
     private bool isWaking = true;
     private bool isDead = false;
@@ -25,15 +24,16 @@ public class Zombie : MonoBehaviour, IDamageable
     private BoxCollider hitBox;
     private Animator zombieAnim;
     private CharacterController zombie;
+    private EnemyStat enemyStat;
 
     public float DamageDealt { get => _damageDealt; }
-    public float Hp { get => hp; }
 
     void Start()
     {
         zombieAnim = GetComponent<Animator>();
         zombie = GetComponent<CharacterController>();
         hitBox = GetComponent<BoxCollider>();
+        enemyStat = GetComponent<EnemyStat>();
 
         AssignAnimtionIDs();
         SetTargetPosition(PlayerController.Player.transform.position);
@@ -49,6 +49,7 @@ public class Zombie : MonoBehaviour, IDamageable
 
     void Update()
     {
+        Dead();
         if (isDead) return;
         SetTargetPosition(PlayerController.Player.transform.position);
 
@@ -110,15 +111,11 @@ public class Zombie : MonoBehaviour, IDamageable
     private void OnTriggerEnter(Collider other)
     {
     }
-
-    public void TakeDamage(float damage)
+    private void Dead()
     {
-        Debug.Log("Zombie is hit");
-        hp -= damage;
-        if(hp <= 0)
+        if (enemyStat.Hp <= 0)
         {
             isDead = true;
-            hp = 0;
             zombie.enabled = false;
             zombieAnim.SetTrigger(_animIDDead);
         }
@@ -127,4 +124,5 @@ public class Zombie : MonoBehaviour, IDamageable
             zombieAnim.SetTrigger(_animIDHit);
         }
     }
+
 }
