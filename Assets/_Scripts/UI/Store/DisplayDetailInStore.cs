@@ -8,6 +8,10 @@ using UnityEngine.UI;
 public class DisplayDetailInStore : MonoBehaviour
 {
     [SerializeField]
+    protected TMP_Text player_coin;
+    [SerializeField]
+    protected TMP_Text price_item;
+    [SerializeField]
     protected Image icon_item;
     [SerializeField]
     protected TMP_Text name_item;
@@ -53,6 +57,8 @@ public class DisplayDetailInStore : MonoBehaviour
     }
     public void UpdateDetailDisplay(Slot slot)
     {
+        player_coin.text = $"YOUR COIN: {InventoryManager.Instance.Coin}";
+
         if (slot == null) return;
 
         Item item = slot.GetItem();
@@ -70,6 +76,8 @@ public class DisplayDetailInStore : MonoBehaviour
             desc_item.text = "";
             quantity_item.text = "";
             actionText_item.text = "";
+            price_item.text = "";
+
 
             return;
         }
@@ -81,5 +89,6 @@ public class DisplayDetailInStore : MonoBehaviour
         desc_item.text = item.desc;
         quantity_item.text = $"X{slot.GetItemAmount()}";
         actionText_item.text =  $"{slot.NameActionToUseItem} x{currentAmout}";
+        price_item.text = $"PRICE: {item.price}";
     }
 }

@@ -11,7 +11,7 @@ public class ProductSlotInStore : Slot
     {
         base.Awake();
 
-        quanlityText = Item.GetComponentInChildren<TMP_Text>();
+        quanlityText = ItemInSlot.GetComponentInChildren<TMP_Text>();
 
         NameActionToUseItem = "Buy";
 

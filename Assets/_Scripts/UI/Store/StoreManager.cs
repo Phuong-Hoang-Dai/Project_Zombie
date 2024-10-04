@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreManager : Singleton<StoreManager>
+public class StoreManager : Singleton<StoreManager>, IDataPersistence
 {
     [SerializeField]
     protected GameObject store;
@@ -26,11 +26,16 @@ public class StoreManager : Singleton<StoreManager>
 
     private void Start()
     {
-        for (int i = 0; i < productSlots.Count; i++)
-            productSlots[i].AddNewItem(emptyItem);
+        //for (int i = 0; i < productSlots.Count; i++)
+        //    if (productSlots[i].GetItem() != null)
+        //        productSlots[i].AddNewItem(emptyItem);
 
-        foreach (var item in items) 
-            AddItem(item.Item, item.Quantity);
+        if(LevelManager.Instance.Day == 0 && 
+            LevelManager.Instance.TimeOfDay == TimeOfDay.Morning)
+        {
+            foreach (var item in items)
+                AddItem(item.Item, item.Quantity);
+        }
 
         store.SetActive(false);
     }
@@ -75,7 +80,33 @@ public class StoreManager : Singleton<StoreManager>
     }
     public void Buy()
     {
+        if (currentSelectedSlot.GetItem().price > InventoryManager.Instance.Coin)
+            return;
+
+        InventoryManager.Instance.UpdateCoin(Mathf.RoundToInt(-currentSelectedSlot.GetItem().price * amountToBuy));
         InventoryManager.Instance.AddItem(currentSelectedSlot.GetItem(), amountToBuy);
         currentSelectedSlot.RemoveQuantity(amountToBuy);
+    }
+
+    public void SaveData(GameData gameData)
+    {
+        gameData.storeItems = new();
+
+        for (int i = 0; i < productSlots.Count; i++)
+        {
+            if (productSlots[i].GetItem() != emptyItem)
+            {
+                gameData.storeItems.Add(new InventoryItem(productSlots[i].GetItemAmount()
+                    , productSlots[i].GetItem()));
+            }
+        }
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        for (int i = 0; i < gameData.storeItems.Count; i++)
+        {
+            AddItem(gameData.storeItems[i].Item, gameData.storeItems[i].Quantity);
+        }
     }
 }

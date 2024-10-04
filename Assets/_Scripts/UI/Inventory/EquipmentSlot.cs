@@ -1,8 +1,6 @@
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class EquipmentSlot : Slot
 {
@@ -14,7 +12,7 @@ public class EquipmentSlot : Slot
     {
         base.Awake();
 
-        equippedDisplayText = Item.GetComponentInChildren<TMP_Text>();
+        equippedDisplayText = ItemInSlot.GetComponentInChildren<TMP_Text>();
 
         NameActionToUseItem = "Equip";
         HideUI();
@@ -38,11 +36,11 @@ public class EquipmentSlot : Slot
         {
             if(oldEquippedSlot.GetItem() != emptyItem)
             {
-                if (oldEquippedSlot.GetItem().cate == global::Item.Cate.Weapon)
+                if (oldEquippedSlot.GetItem().cate == Item.Cate.Weapon)
                     SwapItemWith(InventoryManager.Instance.WeaponSlot.EquipmentSlot);
-                if (oldEquippedSlot.GetItem().cate == global::Item.Cate.Head)
+                if (oldEquippedSlot.GetItem().cate == Item.Cate.Head)
                     SwapItemWith(InventoryManager.Instance.HeadSlot.EquipmentSlot);
-                if (oldEquippedSlot.GetItem().cate == global::Item.Cate.Body)
+                if (oldEquippedSlot.GetItem().cate == Item.Cate.Body)
                     SwapItemWith(InventoryManager.Instance.BodySlot.EquipmentSlot);
 
                 oldEquippedSlot.UseItem();
@@ -56,6 +54,5 @@ public class EquipmentSlot : Slot
     public override void UseItem()
     {
         InventoryManager.Instance.Equip(this);
-        UpdatePlayerStat(itemData.changeAmout);
     }
 }

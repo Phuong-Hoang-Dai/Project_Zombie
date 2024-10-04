@@ -24,17 +24,22 @@ public class AttackingState : PlayerState
         NextState = PlayerController.PlayerState.Attacking;
 
         PlayerController.Instance.PlayerAnim.SetBool(AnimID, true);
+        PlayerController.Instance.StartAttack();
     }
     public override void UpdateState()
     {
         timer += Time.deltaTime;
-        if (CanCancel()) 
+        if (CanCancel())
+        {
             PlayerController.Instance.PlayerAnim.SetBool(AnimID, false);
+            PlayerController.Instance.StopAttack();
+        }
 
         if (CanCancel() && InputManager.Instance.IsAttack)
         {
             timer = 0;
             PlayerController.Instance.PlayerAnim.SetBool(AnimID, true);
+            PlayerController.Instance.StartAttack();
         }
         else if (CanChangeState()) 
         {

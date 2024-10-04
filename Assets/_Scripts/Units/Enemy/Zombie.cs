@@ -1,129 +1,91 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Zombie : MonoBehaviour
+public class Zombie : StateManager<Zombie.ZombieState>
 {
-    private Vector3 targetPosition;
+    private List<BoxCollider> hitBox = new();
+    public Animator ZombieAnim { get; protected set; }
+    public CharacterController ZombieController { get; protected set; }
+    public EnemyStat EnemyStat { get; protected set; }
+    public AudioClip AttackSound;
 
-    private readonly float _damageDealt;
-    private readonly float attackRange = 1f;
-
-    private bool isWaking = true;
-    private bool isDead = false;
-
-    public float Speed;
-    private float speed;
-
-    private int _animIDSpeed;
-    private int _animIDAttack;
-    private int _animIDDead;
-    private int _animIDHit;
-
-    private BoxCollider hitBox;
-    private Animator zombieAnim;
-    private CharacterController zombie;
-    private EnemyStat enemyStat;
-
-    public float DamageDealt { get => _damageDealt; }
-
-    void Start()
+    protected override void Awake()
     {
-        zombieAnim = GetComponent<Animator>();
-        zombie = GetComponent<CharacterController>();
-        hitBox = GetComponent<BoxCollider>();
-        enemyStat = GetComponent<EnemyStat>();
-
-        AssignAnimtionIDs();
     }
 
-    private void AssignAnimtionIDs()
+    protected override void Start()
     {
-        _animIDSpeed = Animator.StringToHash("speed");
-        _animIDAttack = Animator.StringToHash("attack");
-        _animIDDead = Animator.StringToHash("isDead");
-        _animIDHit = Animator.StringToHash("isHit");
+        ZombieAnim = GetComponentInChildren<Animator>();
+        ZombieController = GetComponent<CharacterController>();
+        hitBox = GetComponentsInChildren<BoxCollider>().ToList();
+        EnemyStat = GetComponent<EnemyStat>();
+
+        states.Add(ZombieState.Idle, new EnemyIdle(ZombieState.Idle, this));
+        states.Add(ZombieState.Chase, new EnemyChase(ZombieState.Chase, this));
+        states.Add(ZombieState.Attack, new EnemyAttack(ZombieState.Attack, this));
+        states.Add(ZombieState.Hit, new EnemyHit(ZombieState.Hit, this));
+        states.Add(ZombieState.Dead, new EnemyDead(ZombieState.Dead, this));
+
+        currentState = states[ZombieState.Idle];
+
+        base.Start();
     }
 
-    void Update()
+    protected override void Update()
     {
-        SetTargetPosition(PlayerController.Instance.Player.transform.position);
+        base.Update();
+    }
 
-        Dead();
-        if (isDead) return;
-        SetTargetPosition(PlayerController.Instance.Player.transform.position);
+    public void Dead()
+    {
+        Invoke(nameof(RemoveZombie), 3f);
+    }
 
-        if (IsPLayerOutOfAttackRange())
+    public void RemoveZombie()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void StartAttack(string nameHitBox)
+    {
+        foreach(var hit in hitBox)
         {
-            isWaking = true;
-        }
-        else if(isWaking)
-        {
-            isWaking = false;
-            StartAttackAnimation();
-        }
-
-        speed = isWaking ? Speed : 0;
-        if(speed > 0.01)
-        {
-            MoveToTargetPosition();
-        }
-        HandleAnimation();
-    }
-
-    private bool IsPLayerOutOfAttackRange()
-    {
-        return Vector3.Distance(transform.position, targetPosition) > attackRange;
-    }
-
-    private void MoveToTargetPosition()
-    {
-        transform.LookAt(targetPosition);
-        Vector3 moveDirection = (targetPosition - transform.position).normalized;
-        zombie.Move(speed * Time.deltaTime * moveDirection);
-    }
-
-    public void SetTargetPosition(Vector3 position)
-    {
-        targetPosition = position;
-    }
-
-    private void HandleAnimation()
-    {
-        zombieAnim.SetFloat(_animIDSpeed, speed);
-    }
-
-    private void StartAttackAnimation()
-    {
-        zombieAnim.SetTrigger(_animIDAttack);
-    }
-
-    public void StartAttack()
-    {
-        hitBox.enabled = true;
-    }
-
-    public void StopAttack()
-    {
-        hitBox.enabled = false;
-    }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //}
-    private void Dead()
-    {
-        if (enemyStat.Hp <= 0)
-        {
-            isDead = true;
-            zombie.enabled = false;
-            zombieAnim.SetTrigger(_animIDDead);
-        }
-        else
-        {
-            zombieAnim.SetTrigger(_animIDHit);
+            if (hit.name == nameHitBox)
+                hit.enabled = true;
         }
     }
 
+    public void StopAttack(string nameHitBox)
+    {
+        foreach (var hit in hitBox)
+        {
+            if (hit.name == nameHitBox)
+                hit.enabled = false;
+        }
+    }
+
+    public void IsHitByPlayer()
+    {
+        TransitionToState(ZombieState.Hit);
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            currentState.OnTriggerEnter(other);
+        }
+    }
+
+    public enum ZombieState
+    {
+        Idle,
+        Chase,
+        Attack,
+        Hit,
+        Dead
+    }
 }

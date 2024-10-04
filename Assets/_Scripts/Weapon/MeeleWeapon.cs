@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class MeeleWeapon : Weapon
 {
-    private BoxCollider hitBox;
-    
-    private void Start()
-    {
-        _damageDealt = 4f;
+    protected List<IDamageable> _damagedEnemies = new();
 
-        hitBox = GetComponent<BoxCollider>();
-        _IDAttackAnimation = Animator.StringToHash("MeeleAttack");
+    protected void Start()
+    {
+        IDAttackAnimation = Animator.StringToHash("MeeleAttack");
     }
 
-    private void Update()
+    protected void Update()
     {
-        hitBox.enabled = isAttacking;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
-        if(isAttacking)
+        if (other.CompareTag("Zombie"))
         {
-            IDamageable enemy = other.GetComponent<IDamageable>();
-            if(enemy != null)
+            if (other.TryGetComponent(out IDamageable enemy))
             {
-                AudioSource.PlayClipAtPoint(attackAudioClip, transform.position); 
-                Attack(enemy);
+                if (!_damagedEnemies.Contains(enemy))
+                {
+                    _damagedEnemies.Remove(enemy);
+                    AudioSource.PlayClipAtPoint(AttackAudioClip, transform.position);
+                    PlayerController.Instance.Attack(enemy);
+                }
             }
         }
     }
+    protected void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out IDamageable enemy))
+        {
+            _damagedEnemies.Remove(enemy);
+        }
+    }
+
 }

@@ -17,13 +17,13 @@ public class FileDataHandle
     }
     public void Save(GameData gameData)
     {
+        if (gameData == null) return;
+
         int id = gameData.id;
 
         string[] allSaves = Directory.GetFiles(filePath, $"{fileName}*");
         if (allSaves.Length < 1) id = 0;
         if (id < 0) FindEmptyIdSave(ref id, allSaves);
-
-
 
         gameData.id = id;
 
@@ -141,11 +141,12 @@ public class FileDataHandle
 
     protected string EncryptDecrypt(string data)
     {
-        string modifiedData = "";
-        for(int i = 0; i < data.Length; i++)
-        {
-            modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
-        }
-        return modifiedData;
+        //string modifiedData = "";
+        //for(int i = 0; i < data.Length; i++)
+        //{
+        //    modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+        //}
+        //return modifiedData;
+        return data;
     }
 }

@@ -4,7 +4,16 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Level/Scenes/MainMenu.unity
+    guid: 5a89531cc75844b4683df871b440b55c
+  - enabled: 1
+    path: Assets/Level/Scenes/Afternoon.unity
+    guid: 9b8d95eff6c409e489700078d5cefef1
+  - enabled: 1
+    path: Assets/Level/Scenes/Morning.unity
+    guid: c850ee8c3b14cc8459e7e186857cf567
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: fa6112b055900a449b3ea5b704d59e5e,
       type: 2}

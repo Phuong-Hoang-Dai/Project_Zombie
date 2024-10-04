@@ -2,19 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStat : MonoBehaviour, IDamageable
+public class EnemyStat : MonoBehaviour, IDamageable, IAttackable
 {
-    [SerializeField]
-    private float hp = 10f;
-    [SerializeField]
-    private float def = 10f;
+    protected Zombie zombie;
 
-    public float Hp => hp; 
-    public float Def => def;
+    [field: SerializeField]
+    public float MaxHp {  get; set; }
+    public float CurrentHp { get; set; }
+
+    [field: SerializeField]
+    public float Def { get; set; }
+
+    [field: SerializeField]
+    public float BaseAtk { get; set; }
+
+    private void Start()
+    {
+        zombie = GetComponent<Zombie>();
+
+        CurrentHp = MaxHp;
+    }
 
     public void TakeDamage(float damage)
     {
-        hp -= damage * (1 - (def / (def + 40)));
-        if (hp <= 0) hp = 0;
+        CurrentHp -= damage * (1 - (Def / (Def + 40)));
+        if (CurrentHp <= 0) CurrentHp = 0;
+
+        zombie.IsHitByPlayer();
+    }
+
+    public void Attack(IDamageable enemy)
+    {
+        
     }
 }

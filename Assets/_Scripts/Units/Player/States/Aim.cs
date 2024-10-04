@@ -47,8 +47,9 @@ public class Aim : PlayerState
     {
         int isAim = InputManager.Instance.IsAim ? 1 : -1;
 
+        if (weightLayer <= 1 && weightLayer >= 0) weightLayer += isAim * t * Time.deltaTime;
+
         if (isAim == 1 && weightLayer > 1) weightLayer = 1;
         else if (isAim == -1 && weightLayer < 0) weightLayer = 0;
-        else weightLayer += isAim * t * Time.deltaTime;
     }
 }

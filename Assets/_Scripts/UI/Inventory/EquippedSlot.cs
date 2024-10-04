@@ -21,8 +21,11 @@ public class EquippedSlot : Slot
 
     public override void UseItem()
     {
-        UpdatePlayerStat(-itemData.changeAmout);
+        if(itemData != null ) UpdatePlayerStat(-itemData.changeAmout);
+
         AddNewItem(emptyItem);
+        PlayerController.Instance.Equip(itemData);
+
         EquipmentSlot = null;
         quantity = 0;
     }
@@ -30,6 +33,11 @@ public class EquippedSlot : Slot
     public void Equip(EquipmentSlot slot)
     {
         AddNewItem(slot.GetItem());
+
+        UpdatePlayerStat(itemData.changeAmout);
+
+        PlayerController.Instance.Equip(slot.GetItem());
+
         EquipmentSlot = slot;
         quantity = 1;
     }

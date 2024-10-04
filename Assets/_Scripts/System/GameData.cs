@@ -11,13 +11,19 @@ public class GameData
     [SerializeField]
     public float hpPlayer;
     [SerializeField]
+    public float currentHpPlayer;
+    [SerializeField]
     public float defPlayer;
     [SerializeField]
     public float baseAtkPlayer;
     [SerializeField]
-    public List<InventoryItem> inventoryItems;
+    public int coin;
     [SerializeField]
-    public List<InventoryItem> storeItems;
+    public List<InventoryItem> inventoryItems = new();
+    [SerializeField]
+    public InventoryItem weaponSlot;
+    [SerializeField]
+    public List<InventoryItem> storeItems = new();
     [SerializeField]
     public int day;
     [SerializeField]
@@ -27,10 +33,13 @@ public class GameData
     {
         id = -1;
         day = 0;
-        timeOfDay = TimeOfDay.Afternoon;
+
+        timeOfDay = TimeOfDay.Morning;
 
         hpPlayer = 200;
+        currentHpPlayer = hpPlayer;
         defPlayer = 5;
         baseAtkPlayer = 50;
+        coin = 0;
     }
 }

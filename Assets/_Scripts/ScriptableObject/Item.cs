@@ -7,8 +7,8 @@ public class Item : ScriptableObject
     public Sprite icon;
     public bool isEquipable;
     public string nameItem;
-    public Cate cate = new Cate();
-    public StateToChange statsToChange = new StateToChange();
+    public Cate cate = new();
+    public StatToChange statsToChange = new();
     public int changeAmout;
     public int maxQuantity;
     public string desc;
@@ -24,11 +24,12 @@ public class Item : ScriptableObject
         Head,
         Body
     }
-    public enum StateToChange
+    public enum StatToChange
     {
         None,
         Hp,
         Def,
-        Atk
+        Atk,
+        MaxHp
     }
 }

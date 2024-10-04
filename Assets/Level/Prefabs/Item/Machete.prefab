@@ -181,7 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7e779344cd75948a5db6acd91db56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackAudioClip: {fileID: 0}
+  <AttackAudioClip>k__BackingField: {fileID: 8300000, guid: d339979fc944c5c4ab0074943122c01d,
+    type: 3}
 --- !u!65 &6786105527573530400
 BoxCollider:
   m_ObjectHideFlags: 0

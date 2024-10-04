@@ -95,7 +95,7 @@ public class InputManager : Singleton<InputManager>
 
         Ray ray = MainCamera.ScreenPointToRay(MousePositionOnScreen);
         RaycastHit hit;
-        Physics.Raycast(ray, out hit);
+        Physics.Raycast(ray, out hit, 500f, 1 << 9);
         MousePosition = new Vector2(hit.point.x, hit.point.z);
     }
 
@@ -104,11 +104,11 @@ public class InputManager : Singleton<InputManager>
         if (LookInput != Vector2.zero)
         {
             StartCoroutine(CenterCursor());
-            return Quaternion.Euler(0, 0, -45) * LookInput;
+            return LookInput;
         }
         else if (!IsMouseInCenter())
         {
-            return Quaternion.Euler(0, 0, -10) * (MousePosition - PlayerController.Instance.GetPlayerPosition());
+            return (MousePosition - PlayerController.Instance.GetPlayerPosition());
         }
         return new Vector2(PlayerController.Instance.Player.transform.forward.x, 
             PlayerController.Instance.Player.transform.forward.z);
@@ -149,8 +149,14 @@ public class InputManager : Singleton<InputManager>
     public void OnCloseUI(InputAction.CallbackContext context) => IsCloseUI = true;
     public void OnCancelCloseUI(InputAction.CallbackContext context) => IsCloseUI = false;
 
-    public void DeactiveControlPlayer() => _playerInput.PlayerControl.Disable();
-    public void ActiveControlPlayer() => _playerInput.PlayerControl.Enable();
+    public void DeactiveControlPlayer()
+    {
+        _playerInput.PlayerControl.Disable();
+    }
+    public void ActiveControlPlayer()
+    {
+        _playerInput.PlayerControl.Enable();
+    }
 
     private void OnEnable() { _playerInput.Enable(); }
     private void OnDisable() { _playerInput.Disable(); }

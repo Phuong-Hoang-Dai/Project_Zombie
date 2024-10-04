@@ -8,5 +8,24 @@ public class StoreOwner : MonoBehaviour,IInteractable
 
     public Transform GetTransform() => transform;
 
-    public void Interact() => StoreManager.Instance.OpenStore();
+    public CharacterController Controller { get; private set; }
+
+    private void Awake()
+    {
+        Controller = GetComponent<CharacterController>();
+    }
+
+    public void Start()
+    {
+        if (LevelManager.Instance.TimeOfDay == TimeOfDay.Morning)
+            Controller.enabled = false;
+    }
+
+    public void Interact()
+    {
+        if(LevelManager.Instance.TimeOfDay != TimeOfDay.Morning)
+        {
+            StoreManager.Instance.OpenStore();
+        }
+    }
 }

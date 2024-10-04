@@ -16,10 +16,9 @@ MonoBehaviour:
   isEquipable: 1
   nameItem: Katana
   cate: 3
-  inventoryCate: 2
   statsToChange: 3
   changeAmout: 5
   maxQuantity: 1
   desc: 'This is a good weapon. '
-  price: 5
+  price: 0
   prefab: {fileID: 3840818282402421072, guid: f65f889aef32e0344b1259e8ddb996f5, type: 3}

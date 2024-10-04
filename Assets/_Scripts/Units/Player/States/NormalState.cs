@@ -10,6 +10,6 @@ public class NormalState : PlayerState
     public override void UpdateState()
     {
         if (true) NextState = PlayerController.PlayerState.Combat;
-        else base.UpdateState();
+        //else base.UpdateState();
     }
 }

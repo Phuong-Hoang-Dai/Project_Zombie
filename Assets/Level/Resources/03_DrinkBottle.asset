@@ -16,9 +16,8 @@ MonoBehaviour:
   isEquipable: 0
   nameItem: Drink bottle
   cate: 1
-  inventoryCate: 1
   statsToChange: 1
-  changeAmout: 3
+  changeAmout: 30
   maxQuantity: 9
   desc: A drink botte is old, but It can heal for you.
   price: 2

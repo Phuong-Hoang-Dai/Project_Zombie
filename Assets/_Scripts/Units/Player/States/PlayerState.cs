@@ -34,11 +34,11 @@ public class PlayerState : BaseState<PlayerController.PlayerState>
 
     public PlayerState(PlayerController.PlayerState stateKey) : base(stateKey)
     {
-        _moveSpeed = PlayerStats.Instance.MoveSpeed;
-        _sprintSpeed = PlayerStats.Instance.SprintSpeed;
-        _speedOffset = PlayerStats.Instance.SpeedOffset;
-        _rotationSmoothTime = PlayerStats.Instance.RotationSmoothTime;
-        _speedChangeRate = PlayerStats.Instance.SpeedChangeRate;
+        _moveSpeed = PlayerController.Instance.Stats.MoveSpeed;
+        _sprintSpeed = PlayerController.Instance.Stats.SprintSpeed;
+        _speedOffset = PlayerController.Instance.Stats.SpeedOffset;
+        _rotationSmoothTime = PlayerController.Instance.Stats.RotationSmoothTime;
+        _speedChangeRate = PlayerController.Instance.Stats.SpeedChangeRate;
     }
 
     public override void EnterState()
@@ -71,18 +71,19 @@ public class PlayerState : BaseState<PlayerController.PlayerState>
 
     protected void CalculateTargerAngle()
     {
-        inputDirection = Quaternion.Euler(0f, 45, 0f) * new Vector3(
+        inputDirection = new Vector3(
             InputManager.Instance.MoveInput.x, 0.0f, InputManager.Instance.MoveInput.y).normalized;
 
         if (inputDirection != Vector3.zero)
             _inputRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg ;
         else
-            _inputRotation = PlayerStats.Instance.transform.eulerAngles.y;
+            _inputRotation = PlayerController.Instance.transform.eulerAngles.y;
     }
 
     protected void CalculateLookAngle()
     {
         Vector2 mouseDirection = InputManager.Instance.GetLookDirection();
+
         _mouseRotation = Mathf.Atan2(mouseDirection.x, mouseDirection.y) * Mathf.Rad2Deg;
 
         _angle = Vector3.Angle(mouseDirection, new Vector2(inputDirection.x, inputDirection.z));

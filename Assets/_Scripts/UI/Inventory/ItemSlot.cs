@@ -7,11 +7,19 @@ public class ItemSlot : Slot
     [SerializeField]
     protected TMP_Text quanlityText;
 
+    public override void AddNewItem(Item item)
+    {
+        itemData = item;
+        if (image != null) image.sprite = item.icon;
+
+        if (item == emptyItem) ResetQuantity();
+    }
+
     protected override void Awake()
     {
         base.Awake();
 
-        quanlityText = Item.GetComponentInChildren<TMP_Text>();
+        quanlityText = ItemInSlot.GetComponentInChildren<TMP_Text>();
         HideUI();
             
         NameActionToUseItem = "Use";
@@ -24,11 +32,14 @@ public class ItemSlot : Slot
     }
     public override void UseItem()
     {
-        if (itemData.cate == global::Item.Cate.Weapon) return;
-        if (itemData.cate == global::Item.Cate.Head) return;
-        if (itemData.cate == global::Item.Cate.Body) return;
+        if (itemData.cate == Item.Cate.Weapon) return;
+        if (itemData.cate == Item.Cate.Head) return;
+        if (itemData.cate == Item.Cate.Body) return;
 
-        if (RemoveQuantity(1)) UpdatePlayerStat(itemData.changeAmout);
+        if(itemData.statsToChange == Item.StatToChange.Hp)
+            if(PlayerController.Instance.Stats.CanAddMoreHp())
+                if (RemoveQuantity(1)) 
+                    UpdatePlayerStat(itemData.changeAmout);
     }
 
     protected override void UpdateQuanlity(int newQuality)

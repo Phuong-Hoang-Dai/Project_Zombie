@@ -16,9 +16,8 @@ MonoBehaviour:
   isEquipable: 0
   nameItem: Food can
   cate: 2
-  inventoryCate: 1
   statsToChange: 1
-  changeAmout: 5
+  changeAmout: 50
   maxQuantity: 9
   desc: A food can fill your hunger.
   price: 5

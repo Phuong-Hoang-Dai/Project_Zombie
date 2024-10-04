@@ -27,6 +27,7 @@ public class NormalInCombat : PlayerState
 
         if (InputManager.Instance.IsAim && !InputManager.Instance.IsSprint) 
             NextState = PlayerController.PlayerState.Aiming;
+
         else base.UpdateState();
     }
 }
